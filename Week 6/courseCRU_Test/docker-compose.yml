@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: myapp_mysql_week5
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "Hieu@123456"
+      MYSQL_DATABASE: course
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro   # optional: sql scripts to initialize DB
+    ports:
+      - "3307:3306"   # optional: nếu muốn connect từ host
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: myapp_web_week5
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/course?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "Hieu@123456"
+      # JAVA_OPTS: "-Xms256m -Xmx512m"  # nếu cần
+    ports:
+      - "8080:8080"
+    # nếu bạn build jar trước (không muốn docker build), dùng image thay build:
+    # image: yourname/myapp:latest
+
+volumes:
+  db_data:
+    name: myapp_db_data
