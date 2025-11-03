@@ -1,0 +1,33 @@
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+      smtp_smarthost: 'smtp.gmail.com:587'
+      smtp_from: 'scarifharry@gmail.com'
+      smtp_auth_username: 'scarifharry@gmail.com'
+      smtp_auth_password: 'vdqk vqfj mrnd frfv'
+      smtp_require_tls: true
+
+    route:
+      receiver: email-alert
+      group_wait: 10s
+      group_interval: 1m
+      repeat_interval: 1h
+      routes:
+        - receiver: demo-webhook
+          match:
+            severity: warning   # cảnh báo warning gửi về webhook
+        - receiver: email-alert
+          match_re:
+            severity: "critical|warning"  # cảnh báo warning hoặc critical gửi email
+
+    receivers:
+      - name: 'demo-webhook'
+        webhook_configs:
+          - url: 'https://webhook.site/ec0a2679-f187-441f-9d4e-db14170295ca'
+            send_resolved: true
+
+      - name: 'email-alert'
+        email_configs:
+          - to: 'scarifharry@gmail.com'
+            send_resolved: true
