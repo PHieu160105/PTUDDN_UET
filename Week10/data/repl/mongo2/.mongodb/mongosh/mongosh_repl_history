@@ -1,0 +1,4 @@
+db.users.find().pretty()
+db.getMongo().setReadPref('secondary')
+rs.slaveOk()
+rs.slaveOK()

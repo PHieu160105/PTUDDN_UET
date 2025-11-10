@@ -1,0 +1,15 @@
+db.users.find().pretty()
+db.getMongo().setReadPref('secondary')
+db.users.insertOne({name: "phieu", ts: new Date()})
+use demo
+db.hello()
+db hello
+rs.status()
+})
+  ]
+    {_id: 2, host: "mongo-repl-mongo3:27019"}
+    {_id: 1, host: "mongo-repl-mongo2:27018"},
+    {_id: 0, host: "mongo-repl-mongo1:27017"},
+  members: [
+  _id: "rs0",
+rs.initiate({
